@@ -15,4 +15,8 @@ export class UserAuthService {
     return this.http.post(`${this.api}/auth/login`, data);
   }
 
+  userSignup(data: any) {
+    return this.http.post(`${this.api}/auth/register`, data);
+  }
+
 }
