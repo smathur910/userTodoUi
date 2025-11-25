@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { UserAuthService } from '../../services/user-auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-user-register',
@@ -17,7 +18,8 @@ export class UserRegisterComponent {
   constructor(
     private fb: FormBuilder,
     private userAuthService: UserAuthService,
-    private router: Router
+    private router: Router,
+    private toast: ToastService
   ) {
     this.registerForm = this.fb.group({
       name: [''],
@@ -43,11 +45,13 @@ export class UserRegisterComponent {
 
     this.userAuthService.userSignup(this.registerForm.value).subscribe({
       next: (response: any) => {
-        console.log(response);
-        
+        this.toast.show(response.message);
+        this.router.navigate(['login']);
       },
       error: (error) => {
-        console.error("Login failed:", error);
+        console.log(error.error);
+        
+        // console.error("Login failed:", error.error.message);
       }
     });
   }
